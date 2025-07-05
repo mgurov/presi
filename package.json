@@ -11,6 +11,10 @@
   "dependencies": {
     "animejs": "^4.0.2",
     "astro": "^5.11.0",
-    "reveal.js": "^5.2.1"
+    "reveal.js": "^5.2.1",
+    "sass": "^1.89.2"
+  },
+  "devDependencies": {
+    "@types/reveal.js": "^5.2.0"
   }
 }
