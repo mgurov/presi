@@ -6,4 +6,7 @@ export default defineConfig({
     site: 'https://mgurov.github.io',
     base: '/presi',
     trailingSlash: 'always',
+    redirects: {
+    "/presi/01-tip/": "/presi/presi/01-tip/dev/",
+  }
 });
