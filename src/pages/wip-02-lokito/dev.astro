@@ -169,4 +169,34 @@ import TimelineArrow from "./assets/01-timeline-arrow.astro";
         }
     };
     window.addEventListener("keydown", handleKeyDown);
+
+    (() => {
+        console.log('attaching touchy things')
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        window.addEventListener('touchstart', (e) => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, false);
+
+        window.addEventListener('touchend', (e) => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const threshold = 50; // Minimum distance to consider a swipe
+            const diff = touchendX - touchstartX;
+            console.log('swipe detected', {diff, threshold})
+            if (Math.abs(diff) < threshold) {
+                return;
+            }
+            if (diff < 0) {
+                goBackPhase();
+            }
+            if (diff > 0) {
+                nextPhase();
+            }
+        }
+    })();
 </script>
