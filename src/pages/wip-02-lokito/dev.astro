@@ -6,162 +6,166 @@ import TimelineArrow from "./assets/01-timeline-arrow.astro";
 ---
 
 <div class="press_space">
-    <span class="press_space_text">Space / arrow right to start, arrow left backs.</span>
+    <span class="press_space_text"
+        >Space / arrow right to start, arrow left backs.</span
+    >
 </div>
 
 <div class="absolute scene" style="opacity:0">
-
-
     <TimelineArrow class="timeline-arrow" left="5vw" top="10vw" width="90vw" />
 
     <Box class="first-box" backgroundStroke="#b2f2bb" />
 
     <Box class="second-box" backgroundStroke="#ffc9c9" />
 
-    <Box
-        class="third-box"
-        backgroundStroke="#b2f2bb"
-        style="left:50vw; "
-    />
+    <Box class="third-box" backgroundStroke="#b2f2bb" style="left:50vw; " />
 </div>
 
 <style>
     .press_space {
-        position: absolute; 
+        position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         width: 100vw;
-        background: linear-gradient(0deg,rgb(243, 243, 229) 0%, rgb(231, 249, 249) 100%);
+        background: linear-gradient(
+            0deg,
+            rgb(243, 243, 229) 0%,
+            rgb(231, 249, 249) 100%
+        );
     }
 </style>
 
 <script>
-
-
-
-import { animate, type AnimationSequence, type AnimationPlaybackControlsWithThen } from "motion";
+    import {
+        animate,
+        type AnimationSequence,
+        type AnimationPlaybackControlsWithThen,
+    } from "motion";
 
     let currentPhase = 0;
 
     type OurAnimation = {
-        sequence: AnimationSequence,
-        animation?: AnimationPlaybackControlsWithThen,
-    }
+        sequence: AnimationSequence;
+        animation?: AnimationPlaybackControlsWithThen;
+    };
 
     let phaseDefs: Record<number, AnimationSequence> = {
-        1 : [
-                [
-                    ".press_space_text",
-                    {opacity: 0},
-                    {duration: 0.1}
-                ],
-                [
-                    ".scene",
-                    {opacity: 1},
-                    {duration: 0.1, at:"<"}
-                ],
-                [
-                    ".timeline-arrow",
-                    { scale: [0.4, 1] },
-                    { ease: "circInOut", duration: 0.3, at: '<' },
-                ],
-                [
-                    ".first-box",
-                    { scale: [0, 1], rotate: 360 },
-                    { ease: "easeOut", duration: 0.5, at: "-0.2" },
-                ],
-                [
-                    ".second-box",
-                    { scale: [0, 1], top: "5em"  },
-                    { ease: "easeOut", duration: 0.5 },
-                ],
-                [
-                    ".third-box",
-                    { scale: [0, 1], },
-                    { ease: "easeOut", duration: 0.5 },
-                ],
-                'move-start',
-                [
-                    ".second-box",
-                    { top: "7em" },
-                    { ease: "easeOut", duration: 0.5, at: 'move-start' },
-                ],
-                [
-                    ".third-box",
-                    { top: "7em" },
-                    { ease: "easeOut", duration: 0.5, at: '<' },
-                ],
+        1: [
+            [".press_space_text", { opacity: 0 }, { duration: 0.1 }],
+            [".scene", { opacity: 1 }, { duration: 0.1, at: "<" }],
+            [
+                ".timeline-arrow",
+                { scale: [0.4, 1] },
+                { ease: "circInOut", duration: 0.3, at: "<" },
             ],
-        2: [
             [
                 ".first-box",
-                { left: '7em', top: '28em', rotate: 90 },
-                { ease: "easeOut", duration: 0.5},
+                { scale: [0, 1], rotate: 360 },
+                { ease: "easeOut", duration: 0.5, at: "-0.2" },
             ],
             [
                 ".second-box",
-                { left: '7em', top: '7em', rotate: 90 },
+                { scale: [0, 1], top: "5em" },
+                { ease: "easeOut", duration: 0.5 },
+            ],
+            [
+                ".third-box",
+                { scale: [0, 1] },
+                { ease: "easeOut", duration: 0.5 },
+            ],
+            "move-start",
+            [
+                ".second-box",
+                { top: "7em" },
+                { ease: "easeOut", duration: 0.5, at: "move-start" },
+            ],
+            [
+                ".third-box",
+                { top: "7em" },
+                { ease: "easeOut", duration: 0.5, at: "<" },
+            ],
+        ],
+        2: [
+            [
+                ".first-box",
+                { left: "7em", top: "28em", rotate: 90 },
+                { ease: "easeOut", duration: 0.5 },
+            ],
+            [
+                ".second-box",
+                { left: "7em", top: "7em", rotate: 90 },
                 { ease: "easeOut", duration: 0.5, at: "<" },
             ],
             [
                 ".third-box",
-                { left: "7em", top: '14em', rotate: 90 },
-                { ease: "easeOut", duration: 0.5, at: '<' },
+                { left: "7em", top: "14em", rotate: 90 },
+                { ease: "easeOut", duration: 0.5, at: "<" },
             ],
             [
                 ".timeline-arrow",
-                { 
-                    opacity: 0.5, 
-                    left: ['10vw', '2vw'], 
-                    top: ['5vw' ,'3vw'], 
-                    rotate: -90 ,
+                {
+                    opacity: 0.5,
+                    left: ["10vw", "2vw"],
+                    top: ["5vw", "3vw"],
+                    rotate: -90,
                 },
                 { ease: "circInOut", duration: 0.3, at: "<" },
             ],
-        ]
+        ],
     };
 
     const phases: Record<string, OurAnimation> = {};
     for (const [num, sequence] of Object.entries(phaseDefs)) {
-        phases[num] = {sequence}
+        phases[num] = { sequence };
+    }
+
+    function nextPhase() {
+        if (!phases[currentPhase + 1]) {
+            return;
+        }
+        currentPhase += 1;
+        const phaseCapture = currentPhase;
+        const thePhase = phases[currentPhase];
+        if (!thePhase.animation) {
+            console.log("starting animation", currentPhase);
+            thePhase.animation = animate(phaseDefs[currentPhase]);
+            thePhase.animation.then(
+                () => {
+                    console.log("finished", phaseCapture);
+                },
+                () => {
+                    console.warn("failed", phaseCapture);
+                },
+            );
+        } else {
+            console.log("replaying animation", currentPhase);
+            thePhase.animation.speed = 1;
+            thePhase.animation.play();
+            thePhase.animation.then(() => {
+                console.log(`replaying ${currentPhase}`);
+            });
+        }
+    }
+
+    function goBackPhase() {
+        if (currentPhase <= 0) {
+            return;
+        }
+        console.log("reverting animation", currentPhase);
+        const animation = phases[currentPhase].animation!!;
+        animation.speed = -1;
+        animation.play();
+        currentPhase -= 1;
     }
 
     const handleKeyDown = (e: any) => {
         if (e.code === "Space" || e.code === "ArrowRight") {
-            if (!phases[currentPhase + 1]) {
-                return;
-            }
-            currentPhase += 1;
-            const phaseCapture = currentPhase;
-            const thePhase = phases[currentPhase]
-            if (!thePhase.animation) {
-                console.log('starting animation', currentPhase)
-                thePhase.animation = animate(phaseDefs[currentPhase]);
-                thePhase.animation.then(() => {
-                    console.log('finished', phaseCapture)
-                }, () => {
-                    console.warn('failed', phaseCapture)
-                })
-            } else {
-                console.log('replaying animation', currentPhase)
-                thePhase.animation.speed = 1;
-                thePhase.animation.play();
-                thePhase.animation.then(() => {
-                    console.log(`replaying ${currentPhase}`)
-                })
-            }            
+            nextPhase();
         }
         if (e.code === "ArrowLeft") {
-            if (currentPhase <= 0) {
-                return;
-            }
-            console.log('reverting animation', currentPhase)
-            const animation = phases[currentPhase].animation!!;
-            animation.speed = -1;
-            animation.play();
-            currentPhase -= 1;
+            goBackPhase();
         }
     };
     window.addEventListener("keydown", handleKeyDown);
