@@ -192,10 +192,10 @@ import TimelineArrow from "./assets/01-timeline-arrow.astro";
                 return;
             }
             if (diff < 0) {
-                goBackPhase();
+                nextPhase();
             }
             if (diff > 0) {
-                nextPhase();
+                goBackPhase();
             }
         }
     })();
